@@ -1,0 +1,66 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+
+<div class="container">
+  <div class="row mt-4 justify-content-center">
+    <div class="col-sm-8">
+      <h1 class="text-center">To-Do App by Kirtan Bhavsar for Dendrite.ai</h1>
+      
+      <!-- Display humorous flash messages -->
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-info">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      
+      <!-- Form for adding/updating a To-Do -->
+      <form action="{{ url_for('index', todo_id=todo.id) if todo else url_for('index') }}" method="POST">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter title"
+            class="form-control"
+            value="{{ todo.title if todo else '' }}"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-dark" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+      
+      <!-- Display the list of To-Dos -->
+      {% for todo in todos %}
+      <div class="row mt-2">
+        <div class="col-8">{{ todo.title }}</div>
+        <div class="col-4 text-right">
+          <!-- Edit Button -->
+          <a href="/{{ todo.id }}" class="btn btn-dark btn-sm">Edit</a>
+          
+          <!-- Delete Button -->
+          <form action="{{ url_for('delete', todo_id=todo.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+      
+      <!-- Portfolio link -->
+      <div class="text-center mt-5">
+        <a href="https://kirtanbhavsarportfolio.netlify.app/" target="_blank">Visit my portfolio</a>
+      </div>
+
+      <!-- Footer credit -->
+      <div class="text-center mt-2">
+        <p style="font-size: small;">Made by Kirtan Bhavsar</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}
